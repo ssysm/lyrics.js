@@ -1,0 +1,33 @@
+{
+  "name": "lyrics.js",
+  "version": "1.0.0",
+  "description": "A Lyrics utility library",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.prod.js --mode production",
+    "dev": "webpack-dev-server --config webpack.config.js --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssysm/lyrics.js.git"
+  },
+  "keywords": [
+    "lyrics",
+    "music"
+  ],
+  "author": "ssysm",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ssysm/lyrics.js/issues"
+  },
+  "homepage": "https://github.com/ssysm/lyrics.js#readme",
+  "devDependencies": {
+    "babel-loader": "^7.1.4",
+    "html-webpack-plugin": "^3.2.0",
+    "path": "^0.12.7",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
