@@ -6,7 +6,6 @@
 *           file: .lrc string
 *
 */
-//just quick testing
 class LrcParser {
     constructor(props){
         this.result = new Object();
@@ -14,7 +13,7 @@ class LrcParser {
         this.result.content = new Array();
         this.file = props.file;
     }
-
+    //Parse LRC to JSON
     parse(){
         const lrcArr = this.file.trim().split('\n');
         //loop over the file
@@ -32,7 +31,7 @@ class LrcParser {
         }
         console.log(this.result);
     }
-
+    //Extract header info
     extractInfo(regex){
         this.object = {
             tag:regex[1],
@@ -40,7 +39,7 @@ class LrcParser {
         }
         return this.object;
     }
-
+    //Extract lrc content
     extractContent(regex){
         var playerTimecode = parseInt(regex[4]) * 60 + parseFloat(regex[5]);
         this.object = {

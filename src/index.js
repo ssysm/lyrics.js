@@ -5,4 +5,5 @@ const func = {
 }
 window.lyrcisjs = func;
 
-new func.util.parser({file:require('./example')}).parse();
+new func.util.parser({file:require('./sample/example')}).parse();
+

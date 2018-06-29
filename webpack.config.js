@@ -16,7 +16,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
                  query: {
                      presets: ['es2015']
                  }
-             }
+             },
          ]
      },
      stats: {
