@@ -88,7 +88,7 @@ class LrcParser {
                 var nextElmTimecode = 0;
             }
 
-            if (currentTime >= currentElmTimecode && currentTime <= nextElmTimecode) {
+            if (currentTime > currentElmTimecode && currentTime < nextElmTimecode) {
                 console.log(
                     `currentTime: ${currentTime}, elemTime: ${currentElmTimecode}, nextElmTime: ${nextElmTimecode}`
                 )
@@ -102,7 +102,7 @@ class LrcParser {
 
     jump2audio(event) {
         var timecode = parseInt(event.target.getAttribute('data-timecode'));
-        this.audioElm.currentTime = timecode;
+        this.audioElm.currentTime = timecode+0.1;
     }
 
     appendToDisplay() {
