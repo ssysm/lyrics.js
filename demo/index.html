@@ -34,16 +34,22 @@
     <div id="elem"></div>
 </body>
 <script src="./script.js"></script>
-<script src="./sample.js"></script>
+<script>
+    var client = new XMLHttpRequest();
+    client.open('GET', './sample.lrc');
+    client.send();
+</script>
 <script>
     const elem = document.querySelector('#elem');
     const audioElm = document.querySelector('#audio');
 
-    const parser = new LrcParser({
-        file: lrc,
-        audioElm,
-        displayElm: elem
-    });
+    client.onreadystatechange = () => {
+        new LrcParser({
+            file: client.response,
+            audioElm,
+            displayElm: elem
+        });
+    }
 </script>
 
 </html>
