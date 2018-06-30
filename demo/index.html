@@ -35,21 +35,20 @@
 </body>
 <script src="./script.js"></script>
 <script>
-    var client = new XMLHttpRequest();
-    client.open('GET', './sample.lrc');
-    client.send();
 </script>
 <script>
     const elem = document.querySelector('#elem');
     const audioElm = document.querySelector('#audio');
 
-    client.onreadystatechange = () => {
-        new LrcParser({
-            file: client.response,
-            audioElm,
-            displayElm: elem
+    fetch('./sample.lrc')
+        .then(res => res.text())
+        .then(text => {
+            new LrcParser({
+                file: text,
+                audioElm,
+                displayElm: elem
+            });
         });
-    }
 </script>
 
 </html>
