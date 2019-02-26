@@ -2,9 +2,13 @@
  * Parse LRC
  */
 class LrcParser {
+    /**
+     * Constructor
+     * @param {*} props 
+     */
     constructor(props) {
         this.result = {};
-        this.result.info = [];
+        this.result.info = {};
         this.result.content = [];
         this.file = props.file;
         this.renderArray = [];
@@ -15,36 +19,30 @@ class LrcParser {
         this.jump2audio = this.jump2audio.bind(this);
         this.sync = this.sync.bind(this);
         this.appendToDisplay = this.appendToDisplay.bind(this);
+        this.parse = this.parse.bind(this);
 
         this.audioElm.addEventListener('timeupdate', this.sync, false);
-
-        this.parse();
     }
-    //Parse LRC to JSON
+    /**
+     * 
+     */
     parse() {
         const lrcArr = this.file.trim().split('\n');
         //loop over the file
         for (let line of lrcArr) {
+            var regex = new RegExp(/\[([^\]|\d*])+:+([^\]]*)+\]|\[((\d+):(\d+\.\d+))\]+([^\n]*)/);
+            regex.lastIndex = 0;
             this.object = new Object();
             //set timestamp regex
-            var regex = /\[([^\]|\d]*)+:+([^\]]*)+\]|\[((\d+):(\d+\.\d+))\]+([^\n]*)/gm;
             var match = regex.exec(line);
             if (match[1] && match[2]) {
-                this.result.info.push(this.extractInfo(match))
+                this.result.info[match[1]] = match[2]
             } else if (match[3] && match[4] && match[5]) {
                 this.result.content.push(this.extractContent(match))
-            }
+            }else{ }
         }
         this.render();
         return this.result;
-    }
-    //Extract header info
-    extractInfo(regex) {
-        this.object = {
-            tag: regex[1],
-            content: regex[2]
-        }
-        return this.object;
     }
     //Extract lrc content
     extractContent(regex) {
@@ -92,17 +90,27 @@ class LrcParser {
                 console.log(
                     `currentTime: ${currentTime}, elemTime: ${currentElmTimecode}, nextElmTime: ${nextElmTimecode}`
                 )
-                console.log(elem.children[index])
+                console.log(elem.children[index]);
+                window.scrollTo(0,24*index);
                 this.displayElm.children[index].classList.add('active');
+                this.displayElm.children[index].classList.remove('played');
             } else {
                 this.displayElm.children[index].classList.remove('active');
             }
+
+            if(currentTime > currentElmTimecode && currentTime > nextElmTimecode){
+                this.displayElm.children[index].classList.add('played');
+            }else{
+                this.displayElm.children[index].classList.remove('played');
+            }
+
+
         });
     }
 
     jump2audio(event) {
         var timecode = parseInt(event.target.getAttribute('data-timecode'));
-        this.audioElm.currentTime = timecode+0.1;
+        this.audioElm.currentTime = timecode+0.00001;
     }
 
     appendToDisplay() {
@@ -110,4 +118,8 @@ class LrcParser {
             this.displayElm.appendChild(node);
         });
     }
+
+
+
+
 }

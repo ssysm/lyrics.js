@@ -7,6 +7,26 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+        html{
+            font-family: 'Raleway', sans-serif;
+        }
+        .playbar {
+            position: fixed;
+            bottom: 0;
+            padding: 10px;
+            margin-top: 2px;
+            margin-right: 5px;
+            margin-left: 5px;
+            width: 100%;
+            height: 30px;
+            background-color: #f0f0f0;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+        }
+
+        #elem{
+            text-align: center;
+        }
+
         .lrcElm {
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
             transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
@@ -22,15 +42,47 @@
         .lrcElm.active {
             color: #41bdff;
             font-weight: bold;
+            font-size: 35px;
             text-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
         }
+
+        .lrcElm.played {
+            color: gray;
+        }
     </style>
+    <link rel="stylesheet" href="./lib/SSUhtml5audio.css">
+    <script src="./lib/SSUhtml5Audio.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 </head>
 
 <body>
-    <audio controls id="audio">
-        <source src="./Koi_ni_Naritai_AQUARIUM.ogx">
-    </audio>
+    <div class="playbar">
+        <audio id="audio" ontimeupdate="updateTime()">
+            <source src="./assets/high hopes.mp3" type="audio/mp3" />
+            Your browser does not support the audio tag.
+        </audio>
+        <!-- Div that switches rather or not to play or pause the song based off of song state -->
+        <button id="songPlayPause" onclick="playPause('audio')">
+            <i class="material-icons">play_arrow</i>
+            <i class="material-icons">pause</i>
+        </button>
+        <!-- Div that stops the song when clicked -->
+        <button id="songStop" onclick="stopSong()">
+            <i class="material-icons">stop</i>
+        </button>
+        <!-- Div that updates with current song time while playing -->
+        <span>
+            <i class="material-icons">queue_music</i>
+        </span>
+        <input type="range" id="songSlider" value="0" onchange="setSongPosition(this,event)"/>
+        <span id="songTime">0:00 / 0:00</span>
+        <span>
+            <i class="material-icons">volume_up</i>
+        </span>
+        <input type="range" onclick="setNewVolume(this,event)" name="volumeSlider" id="volumeSlider" value="100">
+
+    </div>
     <div id="elem"></div>
 </body>
 <script src="./script.js"></script>
@@ -40,14 +92,16 @@
     const elem = document.querySelector('#elem');
     const audioElm = document.querySelector('#audio');
 
-    fetch('./sample.lrc')
+    var parser;
+    fetch('./assets/high hopes.lrc')
         .then(res => res.text())
         .then(text => {
-            new LrcParser({
+            parser = new LrcParser({
                 file: text,
                 audioElm,
                 displayElm: elem
             });
+            parser.parse();
         });
 </script>
 
